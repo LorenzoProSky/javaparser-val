@@ -18,6 +18,11 @@ This project contains a set of libraries implementing a Java 1.0 - Java 21 Parse
 
 Our main site is at [JavaParser.org](http://javaparser.org)
 
+## Modifications
+
+1. Added Keyword.VALUE and Keyword.RECORD support in com.github.javaparser.ast.Modifier Keyword enum (needed for refactoring .java files with the new keyword "value").
+2.
+
 ## Sponsors
 
 Support this project by becoming a sponsor! [Become a sponsor](https://opencollective.com/javaparser). Your donation will help the project live and grow successfully.
