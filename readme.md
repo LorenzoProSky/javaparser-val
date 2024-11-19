@@ -101,6 +101,7 @@ implementation 'com.github.javaparser:javaparser-core-serialization:3.26.2'
 
 If you checked out the project's source code from GitHub, you can build the project with maven using:
 ```
+# JAVA 17
 ./mvnw clean install
 ```
 
