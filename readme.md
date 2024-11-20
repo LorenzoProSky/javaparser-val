@@ -33,6 +33,8 @@ Modified files:
 - com.github.javaparser.JavaParserTest
 - com.github.javaparser.ast.ParseResultTest
 
+[javaparser-core-3.26.3-mod.jar](javaparser-core/javaparser-core-3.26.3-SNAPSHOT.jar)
+
 ## Sponsors
 
 Support this project by becoming a sponsor! [Become a sponsor](https://opencollective.com/javaparser). Your donation will help the project live and grow successfully.
