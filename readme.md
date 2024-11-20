@@ -4,7 +4,7 @@
     Modifying this file directly within the root directory risks it being overwritten. 
 -->
 
-# JavaParser
+# JavaParser - Value Type Support
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.javaparser/javaparser-core.svg)](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.github.javaparser%22%20AND%20a%3A%22javaparser-core%22)
 [![Build Status](https://github.com/javaparser/javaparser/actions/workflows/maven_tests.yml/badge.svg?branch=master)](https://github.com/javaparser/javaparser/actions/workflows/maven_tests.yml)
@@ -17,6 +17,21 @@
 This project contains a set of libraries implementing a Java 1.0 - Java 21 Parser with advanced analysis functionalities.
 
 Our main site is at [JavaParser.org](http://javaparser.org)
+
+## Modifications for Value Type Support
+
+1. Added Keyword.VALUE_TYPE support in com.github.javaparser.ast.Modifier Keyword enum (needed for refactoring .java files with the new keyword "value").
+2. Grammar modifications to support VALUE_TYPE keyword (needed for lexical preserving refactoring).
+
+Modified files:
+- com.github.javaparser.JavaToken
+- com.github.javaparser.TokenTypes
+- com.github.javaparser.ast.Modifier
+- com.github.javaparser.printer.lexicalpreservation.LexicalDifferenceCalculator
+- /javaparser-core/src/main/javacc/java.jj
+- com.github.javaparser.serialization.JavaParserJsonSerializerTest
+- com.github.javaparser.JavaParserTest
+- com.github.javaparser.ast.ParseResultTest
 
 ## Sponsors
 
@@ -101,6 +116,7 @@ implementation 'com.github.javaparser:javaparser-core-serialization:3.26.2'
 
 If you checked out the project's source code from GitHub, you can build the project with maven using:
 ```
+# JAVA 17
 ./mvnw clean install
 ```
 
