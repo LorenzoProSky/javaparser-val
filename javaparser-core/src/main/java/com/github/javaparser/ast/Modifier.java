@@ -111,7 +111,8 @@ public class Modifier extends Node {
         STRICTFP("strictfp"),
         TRANSITIVE("transitive"),
         SEALED("sealed"),
-        NON_SEALED("non-sealed");
+        NON_SEALED("non-sealed"),
+        VALUE_TYPE("value");
 
         private final String codeRepresentation;
 

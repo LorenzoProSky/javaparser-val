@@ -367,6 +367,7 @@ TOKEN :
 | < PROVIDES: "provides" >
 | < TRANSITIVE: "transitive" >
 | < WHEN: "when" >
+| < VALUE_TYPE: "value" >
 }
 
 /* LITERALS */
@@ -1279,6 +1280,8 @@ ModifierHolder Modifiers():
             "sealed" { add(modifiers, new Modifier(tokenRange(), Modifier.Keyword.SEALED));  begin = orIfInvalid(begin, token()); }
          |
             "non-sealed" { add(modifiers, new Modifier(tokenRange(), Modifier.Keyword.NON_SEALED));  begin = orIfInvalid(begin, token()); }
+         |
+            "value" { add(modifiers, new Modifier(tokenRange(), Modifier.Keyword.VALUE_TYPE));  begin = orIfInvalid(begin, token()); }
          |
              ann = Annotation() { annotations = add(annotations, ann); begin = orIfInvalid(begin, ann); }
         )
@@ -2955,7 +2958,7 @@ SimpleName SimpleName():
  * For Convenience:
  * https://docs.oracle.com/javase/specs/jls/se15/html/jls-3.html#jls-3.9
  * <blockquote>
- * 51 character sequences, formed from ASCII letters, are reserved for use as keywords and cannot be used as identifiers (§3.8).
+ * 52 character sequences, formed from ASCII letters, are reserved for use as keywords and cannot be used as identifiers (§3.8).
  * </blockquote>
  * <pre>{@code
  *     Keyword:
@@ -2971,7 +2974,7 @@ SimpleName SimpleName():
  *         char       final      interface    static      void
  *         class      finally    long         strictfp    volatile
  *         const      float      native       super       while
- *         _ (underscore)
+ *         _ (underscore)   value
  * }</pre>
  */
 String Identifier():
@@ -2985,7 +2988,7 @@ String Identifier():
         // Make sure the module info keywords don't interfere with normal Java parsing by matching them as normal identifiers.
         <MODULE> | <REQUIRES> | <TO> | <WITH> | <OPEN> | <OPENS> | <USES> | <EXPORTS> | <PROVIDES> | <TRANSITIVE> |
         // Make sure older Java versions parse
-        <ENUM> | <STRICTFP> | <YIELD> | <RECORD> | <PERMITS> | <SEALED> | <WHEN> |
+        <ENUM> | <STRICTFP> | <YIELD> | <RECORD> | <PERMITS> | <SEALED> | <WHEN> | <VALUE_TYPE> |
         // An actual plain old identifier
         <IDENTIFIER>
     ) { ret = token.image; setTokenKind(IDENTIFIER);}

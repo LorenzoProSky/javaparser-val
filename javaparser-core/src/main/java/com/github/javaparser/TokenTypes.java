@@ -166,6 +166,7 @@ public class TokenTypes {
             case OPEN:
             case OPENS:
             case USES:
+            case VALUE_TYPE:
             case MODULE:
             case EXPORTS:
             case PROVIDES:

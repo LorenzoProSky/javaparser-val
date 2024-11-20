@@ -376,6 +376,8 @@ class LexicalDifferenceCalculator {
                 return GeneratedJavaParserConstants.STRICTFP;
             case TRANSITIVE:
                 return GeneratedJavaParserConstants.TRANSITIVE;
+            case VALUE_TYPE:
+                return GeneratedJavaParserConstants.VALUE_TYPE;
             default:
                 throw new UnsupportedOperationException(
                         "Not supported keyword" + modifier.getKeyword().name());

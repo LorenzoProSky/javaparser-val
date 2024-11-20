@@ -30,7 +30,8 @@ import java.util.Optional;
 
 /**
  * A token from a parsed source file.
- * (Awkwardly named "Java"Token since JavaCC already generates an internal class Token.)
+ * (Awkwardly named "Java"Token since JavaCC already generates an internal class
+ * Token.)
  * It is a node in a double linked list called token list.
  */
 public class JavaToken {
@@ -58,35 +59,47 @@ public class JavaToken {
     JavaToken(Token token, List<JavaToken> tokens) {
         // You could be puzzled by the following lines
         //
-        // The reason why these lines are necessary is the fact that Java is ambiguous. There are cases where the
-        // sequence of characters ">>>" and ">>" should be recognized as the single tokens ">>>" and ">>". In other
+        // The reason why these lines are necessary is the fact that Java is ambiguous.
+        // There are cases where the
+        // sequence of characters ">>>" and ">>" should be recognized as the single
+        // tokens ">>>" and ">>". In other
         // cases however we want to split those characters in single GT tokens (">").
         //
-        // For example, in expressions ">>" and ">>>" are valid, while when defining types we could have this:
+        // For example, in expressions ">>" and ">>>" are valid, while when defining
+        // types we could have this:
         //
         // List<List<Set<String>>>>
         //
-        // You can see that the sequence ">>>>" should be interpreted as four consecutive ">" tokens closing a type
+        // You can see that the sequence ">>>>" should be interpreted as four
+        // consecutive ">" tokens closing a type
         // parameter list.
         //
-        // The JavaCC handle this case by first recognizing always the longest token, and then depending on the context
-        // putting back the unused chars in the stream. However in those cases the token provided is invalid: it has an
-        // image corresponding to the text originally recognized, without considering that after some characters could
+        // The JavaCC handle this case by first recognizing always the longest token,
+        // and then depending on the context
+        // putting back the unused chars in the stream. However in those cases the token
+        // provided is invalid: it has an
+        // image corresponding to the text originally recognized, without considering
+        // that after some characters could
         // have been put back into the stream.
         //
         // So in the case of:
         //
         // List<List<Set<String>>>>
-        // ___   -> recognized as ">>>", then ">>" put back in the stream but Token(type=GT, image=">>>") passed to this
+        // ___ -> recognized as ">>>", then ">>" put back in the stream but
+        // Token(type=GT, image=">>>") passed to this
         // class
-        // ___  -> recognized as ">>>", then ">>" put back in the stream but Token(type=GT, image=">>>") passed to this
+        // ___ -> recognized as ">>>", then ">>" put back in the stream but
+        // Token(type=GT, image=">>>") passed to this
         // class
-        // __  -> recognized as ">>", then ">" put back in the stream but Token(type=GT, image=">>") passed to this
+        // __ -> recognized as ">>", then ">" put back in the stream but Token(type=GT,
+        // image=">>") passed to this
         // class
-        // _  -> Token(type=GT, image=">") good!
+        // _ -> Token(type=GT, image=">") good!
         //
-        // So given the image could be wrong but the type is correct, we look at the type of the token and we fix
-        // the image. Everybody is happy and we can keep this horrible thing as our little secret.
+        // So given the image could be wrong but the type is correct, we look at the
+        // type of the token and we fix
+        // the image. Everybody is happy and we can keep this horrible thing as our
+        // little secret.
         Range range = Range.range(token.beginLine, token.beginColumn, token.endLine, token.endColumn);
         String text = token.image;
         if (token.kind == GeneratedJavaParserConstants.GT) {
@@ -178,7 +191,8 @@ public class JavaToken {
     }
 
     /**
-     * @return the token range that goes from the beginning to the end of the token list this token is a part of.
+     * @return the token range that goes from the beginning to the end of the token
+     *         list this token is a part of.
      */
     public TokenRange toTokenRange() {
         return new TokenRange(findFirstToken(), findLastToken());
@@ -197,14 +211,16 @@ public class JavaToken {
     }
 
     /**
-     * Used by the parser while constructing nodes. No tokens should be invalid when the parser is done.
+     * Used by the parser while constructing nodes. No tokens should be invalid when
+     * the parser is done.
      */
     public boolean valid() {
         return !invalid();
     }
 
     /**
-     * Used by the parser while constructing nodes. No tokens should be invalid when the parser is done.
+     * Used by the parser while constructing nodes. No tokens should be invalid when
+     * the parser is done.
      */
     public boolean invalid() {
         return this == INVALID;
@@ -343,78 +359,80 @@ public class JavaToken {
         PROVIDES(77),
         TRANSITIVE(78),
         WHEN(79),
-        LONG_LITERAL(80),
-        INTEGER_LITERAL(81),
-        DECIMAL_LITERAL(82),
-        HEX_LITERAL(83),
-        OCTAL_LITERAL(84),
-        BINARY_LITERAL(85),
-        FLOATING_POINT_LITERAL(86),
-        DECIMAL_FLOATING_POINT_LITERAL(87),
-        DECIMAL_EXPONENT(88),
-        HEXADECIMAL_FLOATING_POINT_LITERAL(89),
-        HEXADECIMAL_EXPONENT(90),
-        HEX_DIGITS(91),
-        UNICODE_ESCAPE(92),
-        CHARACTER_LITERAL(93),
-        STRING_LITERAL(94),
-        ENTER_TEXT_BLOCK(95),
-        TEXT_BLOCK_LITERAL(96),
-        TEXT_BLOCK_CONTENT(97),
-        IDENTIFIER(98),
-        LETTER(99),
-        PART_LETTER(100),
-        LPAREN(101),
-        RPAREN(102),
-        LBRACE(103),
-        RBRACE(104),
-        LBRACKET(105),
-        RBRACKET(106),
-        SEMICOLON(107),
-        COMMA(108),
-        DOT(109),
-        ELLIPSIS(110),
-        AT(111),
-        DOUBLECOLON(112),
-        ASSIGN(113),
-        LT(114),
-        BANG(115),
-        TILDE(116),
-        HOOK(117),
-        COLON(118),
-        ARROW(119),
-        EQ(120),
-        GE(121),
-        LE(122),
-        NE(123),
-        SC_AND(124),
-        SC_OR(125),
-        INCR(126),
-        DECR(127),
-        PLUS(128),
-        MINUS(129),
-        STAR(130),
-        SLASH(131),
-        BIT_AND(132),
-        BIT_OR(133),
-        XOR(134),
-        REM(135),
-        LSHIFT(136),
-        PLUSASSIGN(137),
-        MINUSASSIGN(138),
-        STARASSIGN(139),
-        SLASHASSIGN(140),
-        ANDASSIGN(141),
-        ORASSIGN(142),
-        XORASSIGN(143),
-        REMASSIGN(144),
-        LSHIFTASSIGN(145),
-        RSIGNEDSHIFTASSIGN(146),
-        RUNSIGNEDSHIFTASSIGN(147),
-        RUNSIGNEDSHIFT(148),
-        RSIGNEDSHIFT(149),
-        GT(150),
-        CTRL_Z(151);
+        VALUE_TYPE(80),
+        LONG_LITERAL(81),
+        INTEGER_LITERAL(82),
+        DECIMAL_LITERAL(83),
+        HEX_LITERAL(84),
+        OCTAL_LITERAL(85),
+        BINARY_LITERAL(86),
+        FLOATING_POINT_LITERAL(87),
+        DECIMAL_FLOATING_POINT_LITERAL(88),
+        DECIMAL_EXPONENT(89),
+        HEXADECIMAL_FLOATING_POINT_LITERAL(90),
+        HEXADECIMAL_EXPONENT(91),
+        HEX_DIGITS(92),
+        UNICODE_ESCAPE(93),
+        CHARACTER_LITERAL(94),
+        STRING_LITERAL(95),
+        ENTER_TEXT_BLOCK(96),
+        TEXT_BLOCK_LITERAL(97),
+        TEXT_BLOCK_CONTENT(98),
+        IDENTIFIER(99),
+        LETTER(100),
+        PART_LETTER(101),
+        LPAREN(102),
+        RPAREN(103),
+        LBRACE(104),
+        RBRACE(105),
+        LBRACKET(106),
+        RBRACKET(107),
+        SEMICOLON(108),
+        COMMA(109),
+        DOT(110),
+        ELLIPSIS(111),
+        AT(112),
+        DOUBLECOLON(113),
+        ASSIGN(114),
+        LT(115),
+        BANG(116),
+        TILDE(117),
+        HOOK(118),
+        COLON(119),
+        ARROW(120),
+        EQ(121),
+        GE(122),
+        LE(123),
+        NE(124),
+        SC_AND(125),
+        SC_OR(126),
+        INCR(127),
+        DECR(128),
+        PLUS(129),
+        MINUS(130),
+        STAR(131),
+        SLASH(132),
+        BIT_AND(133),
+        BIT_OR(134),
+        XOR(135),
+        REM(136),
+        LSHIFT(137),
+        PLUSASSIGN(138),
+        MINUSASSIGN(139),
+        STARASSIGN(140),
+        SLASHASSIGN(141),
+        ANDASSIGN(142),
+        ORASSIGN(143),
+        XORASSIGN(144),
+        REMASSIGN(145),
+        LSHIFTASSIGN(146),
+        RSIGNEDSHIFTASSIGN(147),
+        RUNSIGNEDSHIFTASSIGN(148),
+        RUNSIGNEDSHIFT(149),
+        RSIGNEDSHIFT(150),
+        GT(151),
+        CTRL_Z(152);
+
 
         private final int kind;
 
@@ -424,150 +442,152 @@ public class JavaToken {
 
         public static Kind valueOf(int kind) {
             switch (kind) {
-                case 151:
+                case 152:
                     return CTRL_Z;
-                case 150:
+                case 151:
                     return GT;
-                case 149:
+                case 150:
                     return RSIGNEDSHIFT;
-                case 148:
+                case 149:
                     return RUNSIGNEDSHIFT;
-                case 147:
+                case 148:
                     return RUNSIGNEDSHIFTASSIGN;
-                case 146:
+                case 147:
                     return RSIGNEDSHIFTASSIGN;
-                case 145:
+                case 146:
                     return LSHIFTASSIGN;
-                case 144:
+                case 145:
                     return REMASSIGN;
-                case 143:
+                case 144:
                     return XORASSIGN;
-                case 142:
+                case 143:
                     return ORASSIGN;
-                case 141:
+                case 142:
                     return ANDASSIGN;
-                case 140:
+                case 141:
                     return SLASHASSIGN;
-                case 139:
+                case 140:
                     return STARASSIGN;
-                case 138:
+                case 139:
                     return MINUSASSIGN;
-                case 137:
+                case 138:
                     return PLUSASSIGN;
-                case 136:
+                case 137:
                     return LSHIFT;
-                case 135:
+                case 136:
                     return REM;
-                case 134:
+                case 135:
                     return XOR;
-                case 133:
+                case 134:
                     return BIT_OR;
-                case 132:
+                case 133:
                     return BIT_AND;
-                case 131:
+                case 132:
                     return SLASH;
-                case 130:
+                case 131:
                     return STAR;
-                case 129:
+                case 130:
                     return MINUS;
-                case 128:
+                case 129:
                     return PLUS;
-                case 127:
+                case 128:
                     return DECR;
-                case 126:
+                case 127:
                     return INCR;
-                case 125:
+                case 126:
                     return SC_OR;
-                case 124:
+                case 125:
                     return SC_AND;
-                case 123:
+                case 124:
                     return NE;
-                case 122:
+                case 123:
                     return LE;
-                case 121:
+                case 122:
                     return GE;
-                case 120:
+                case 121:
                     return EQ;
-                case 119:
+                case 120:
                     return ARROW;
-                case 118:
+                case 119:
                     return COLON;
-                case 117:
+                case 118:
                     return HOOK;
-                case 116:
+                case 117:
                     return TILDE;
-                case 115:
+                case 116:
                     return BANG;
-                case 114:
+                case 115:
                     return LT;
-                case 113:
+                case 114:
                     return ASSIGN;
-                case 112:
+                case 113:
                     return DOUBLECOLON;
-                case 111:
+                case 112:
                     return AT;
-                case 110:
+                case 111:
                     return ELLIPSIS;
-                case 109:
+                case 110:
                     return DOT;
-                case 108:
+                case 109:
                     return COMMA;
-                case 107:
+                case 108:
                     return SEMICOLON;
-                case 106:
+                case 107:
                     return RBRACKET;
-                case 105:
+                case 106:
                     return LBRACKET;
-                case 104:
+                case 105:
                     return RBRACE;
-                case 103:
+                case 104:
                     return LBRACE;
-                case 102:
+                case 103:
                     return RPAREN;
-                case 101:
+                case 102:
                     return LPAREN;
-                case 100:
+                case 101:
                     return PART_LETTER;
-                case 99:
+                case 100:
                     return LETTER;
-                case 98:
+                case 99:
                     return IDENTIFIER;
-                case 97:
+                case 98:
                     return TEXT_BLOCK_CONTENT;
-                case 96:
+                case 97:
                     return TEXT_BLOCK_LITERAL;
-                case 95:
+                case 96:
                     return ENTER_TEXT_BLOCK;
-                case 94:
+                case 95:
                     return STRING_LITERAL;
-                case 93:
+                case 94:
                     return CHARACTER_LITERAL;
-                case 92:
+                case 93:
                     return UNICODE_ESCAPE;
-                case 91:
+                case 92:
                     return HEX_DIGITS;
-                case 90:
+                case 91:
                     return HEXADECIMAL_EXPONENT;
-                case 89:
+                case 90:
                     return HEXADECIMAL_FLOATING_POINT_LITERAL;
-                case 88:
+                case 89:
                     return DECIMAL_EXPONENT;
-                case 87:
+                case 88:
                     return DECIMAL_FLOATING_POINT_LITERAL;
-                case 86:
+                case 87:
                     return FLOATING_POINT_LITERAL;
-                case 85:
+                case 86:
                     return BINARY_LITERAL;
-                case 84:
+                case 85:
                     return OCTAL_LITERAL;
-                case 83:
+                case 84:
                     return HEX_LITERAL;
-                case 82:
+                case 83:
                     return DECIMAL_LITERAL;
-                case 81:
+                case 82:
                     return INTEGER_LITERAL;
-                case 80:
+                case 81:
                     return LONG_LITERAL;
+                case 80:
+                    return VALUE_TYPE;
                 case 79:
                     return WHEN;
                 case 78:
@@ -779,7 +799,8 @@ public class JavaToken {
     }
 
     /**
-     * Links the tokens around the current token together, making the current token disappear from the list.
+     * Links the tokens around the current token together, making the current token
+     * disappear from the list.
      */
     public void deleteToken() {
         final Optional<JavaToken> nextToken = getNextToken();
@@ -834,11 +855,15 @@ public class JavaToken {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         JavaToken javaToken = (JavaToken) o;
-        if (kind != javaToken.kind) return false;
-        if (!text.equals(javaToken.text)) return false;
+        if (kind != javaToken.kind)
+            return false;
+        if (!text.equals(javaToken.text))
+            return false;
         return true;
     }
 }
